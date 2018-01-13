@@ -1,0 +1,11 @@
+{
+  "name": "Noxys_Swimming",
+  "version": "0.0.1",
+  "factorio_version": "0.16",
+  "title": "Noxys Swimming",
+  "author": "Noxy",
+  "contact": "donotcontactme@example.com",
+  "homepage": "https://mods.factorio.com/",
+  "description": "Allows you to \"Swim\" through water.",
+  "dependencies": ["base >= 0.16.0"]
+}
