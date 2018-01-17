@@ -19,12 +19,5 @@ data:extend({
 		order = "b"
 	},
 	-- Global
-	{
-		type = "bool-setting",
-		name = "Noxys_Swimming-enable-water-particles",
-		setting_type = "runtime-global",
-		default_value = true,
-		order = "a"
-	},
 	-- Per user
 })
