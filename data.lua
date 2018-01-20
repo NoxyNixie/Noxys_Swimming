@@ -1,7 +1,13 @@
 local speed = settings.startup["Noxys_Swimming-swimming-speed"].value
+local is_deep_swimmable = settings.startup["Noxys_Swimming-is-deep-swimmable"].value
 local deepspeed = settings.startup["Noxys_Swimming-swimming-deep-speed"].value
+local waters = {"water", "water-green"}
+if is_deep_swimmable then
+	table.insert(waters, "deepwater")
+	table.insert(waters, "deepwater-green")
+end
 
-for _,water in pairs{"water", "deepwater", "water-green", "deepwater-green"} do
+for _,water in pairs(waters) do
 	-- Collision mask
 	local mask = data.raw.tile[water].collision_mask
 	for i=#mask,1,-1 do
@@ -10,21 +16,20 @@ for _,water in pairs{"water", "deepwater", "water-green", "deepwater-green"} do
 		end
 	end
 	-- Sound
-	data.raw.tile[water].walking_sound =
+	data.raw.tile[water].walking_sound = {
 		{
-			{
-				filename = "__Noxys_Swimming__/sounds/water-1.ogg",
-				volume = 0.8
-			},
-			{
-				filename = "__Noxys_Swimming__/sounds/water-2.ogg",
-				volume = 0.8
-			},
-			{
-				filename = "__Noxys_Swimming__/sounds/water-3.ogg",
-				volume = 0.8
-			}
+			filename = "__Noxys_Swimming__/sounds/water-1.ogg",
+			volume = 0.8
+		},
+		{
+			filename = "__Noxys_Swimming__/sounds/water-2.ogg",
+			volume = 0.8
+		},
+		{
+			filename = "__Noxys_Swimming__/sounds/water-3.ogg",
+			volume = 0.8
 		}
+	}
 end
 
 -- Speed
@@ -32,9 +37,11 @@ for _,water in pairs{"water", "water-green"} do
 	data.raw.tile[water].vehicle_friction_modifier = 6 / speed
 	data.raw.tile[water].walking_speed_modifier    = speed
 end
-for _,water in pairs{"deepwater", "deepwater-green"} do
-	data.raw.tile[water].vehicle_friction_modifier = 6 / deepspeed
-	data.raw.tile[water].walking_speed_modifier    = deepspeed
+if is_deep_swimmable then
+	for _,water in pairs{"deepwater", "deepwater-green"} do
+		data.raw.tile[water].vehicle_friction_modifier = 6 / deepspeed
+		data.raw.tile[water].walking_speed_modifier    = deepspeed
+	end
 end
 
 data:extend{{
