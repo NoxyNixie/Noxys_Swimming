@@ -103,7 +103,7 @@ data:extend{{
 }}
 
 local function make_ripple(prefix, nr, color)
-	return {
+	data:extend{{
 		type = "smoke-with-trigger",
 		name = prefix .. "-ripple" .. nr .. "-smoke",
 		flags = {"not-on-map", "placeable-off-grid"},
@@ -130,12 +130,10 @@ local function make_ripple(prefix, nr, color)
 		color = color,
 		action = nil,
 		action_cooldown = 0
-	}
+	}}
 end
 
 for i = 1, 4 do
-	data:extend{make_ripple("water", i, {r = 0.3, g = 0.8, b = 0.9})}
-end
-for i = 1, 4 do
-	data:extend{make_ripple("greenwater", i, {r = 0.1, g = 0.5, b = 0})}
+	make_ripple("water", i, {r = 0.3, g = 0.8, b = 0.9})
+	make_ripple("greenwater", i, {r = 0.1, g = 0.5, b = 0})
 end

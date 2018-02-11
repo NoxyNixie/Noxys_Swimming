@@ -21,7 +21,7 @@ local function is_water_str(str)
 	return false
 end
 
-function initialize()
+local function initialize()
 	global.corpses = {}
 	global.rng     = game.create_random_generator()
 end
@@ -39,14 +39,14 @@ local function do_the_ripple(player)
 	local p = player.position
 	local surface = player.surface
 	if is_clean_water_str(surface.get_tile(p).name) then
-		if surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "water", limit = 25} + 
-			surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "deepwater", limit = 25} >= 25 
+		if surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "water", limit = 25} +
+			surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "deepwater", limit = 25} >= 25
 		then
 			surface.create_entity{name = "water-ripple" .. global.rng(1, 4) .. "-smoke", position = p}
 		end
 	elseif is_green_water_str(surface.get_tile(p).name) then
-		if surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "water-green", limit = 25} + 
-			surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "deepwater-green", limit = 25} >= 25 
+		if surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "water-green", limit = 25} +
+			surface.count_tiles_filtered{area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}}, name = "deepwater-green", limit = 25} >= 25
 		then
 			surface.create_entity{name = "greenwater-ripple" .. global.rng(1, 4) .. "-smoke", position = p}
 		end
@@ -58,13 +58,13 @@ script.on_event(defines.events.on_tick, function(event)
 	if event.tick % 30 == 0 then
 		-- Clean up corpses in water
 		local r = 1
-		for k,v in pairs(global.corpses) do
+		for _,v in pairs(global.corpses) do
 			local corpses = game.surfaces[v[1]].find_entities_filtered{area = {{v[2] - r, v[3] - r}, {v[2] + r, v[3] + r}}, type = "corpse"}
 			if corpses then
 				for i=#corpses,1,-1 do
 					--todo: maybe I can change the fade times to be short instead of just destroying them.
 					corpses[i].destroy()
-				end				
+				end
 			end
 		end
 		global.corpses = {}
