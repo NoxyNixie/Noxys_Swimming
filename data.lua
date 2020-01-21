@@ -119,7 +119,9 @@ local function make_ripple(prefix, nr, color)
 			frame_count = 48,
 			line_length = 8,
 			shift = {0, 0.5},
-			animation_speed = 0.25
+			animation_speed = 0.25,
+			blend_mode = "additive-soft",
+			premul_alpha = true
 		},
 		slow_down_factor = 0,
 		affected_by_wind = false,
@@ -134,6 +136,6 @@ local function make_ripple(prefix, nr, color)
 end
 
 for i = 1, 4 do
-	make_ripple("water", i, {r = 0.3, g = 0.8, b = 0.9})
-	make_ripple("greenwater", i, {r = 0.1, g = 0.5, b = 0})
+	make_ripple("water", i, {r = 0.15, g = 0.4, b = 0.45})
+	make_ripple("greenwater", i, {r = 0.05, g = 0.25, b = 0})
 end
