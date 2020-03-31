@@ -21,12 +21,14 @@ local function ripple_at_position(p, surface)
 			surface.count_tiles_filtered{area = area, name = "deepwater", limit = 25} >= 25
 		then
 			surface.create_entity{name = "water-ripple" .. rand(1, 4) .. "-smoke", position = p}
+      return true
 		end
 	elseif waters.green[surface.get_tile(p).name] then
 		if surface.count_tiles_filtered{area = area, name = "water-green", limit = 25} +
 			surface.count_tiles_filtered{area = area, name = "deepwater-green", limit = 25} >= 25
 		then
 			surface.create_entity{name = "greenwater-ripple" .. rand(1, 4) .. "-smoke", position = p}
+      return true
 		end
 	end
 end
@@ -61,7 +63,8 @@ end)
 
 script.on_event(defines.events.on_post_entity_died, function(event)
 	for _,v in pairs(event.corpses) do
-		ripple_at_position(v.position, v.surface)
-		v.destroy()
+		if ripple_at_position(v.position, v.surface) then
+      v.destroy()
+    end
 	end
 end)
