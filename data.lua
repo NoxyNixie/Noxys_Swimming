@@ -138,4 +138,5 @@ end
 for i = 1, 4 do
 	make_ripple("water", i, {r = 0.15, g = 0.4, b = 0.45})
 	make_ripple("greenwater", i, {r = 0.05, g = 0.25, b = 0})
+	make_ripple("mudwater", i, {r = 0.35, g = 0.5, b = 0.55})
 end

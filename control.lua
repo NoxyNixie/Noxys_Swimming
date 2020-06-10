@@ -2,7 +2,8 @@ local rand = math.random
 
 local waters = {
 	clean = {["water"] = true , ["deepwater"] = true},
-	green = {["water-green"] = true, ["deepwater-green"] = true}
+	green = {["water-green"] = true, ["deepwater-green"] = true},
+	mud = {["water-mud"] = true, ["water-shallow"] = true}
 }
 
 script.on_configuration_changed(function()
@@ -16,18 +17,26 @@ end)
 local function ripple_at_position(p, surface)
 	local r = 2.5
 	local area = {{p.x - r, p.y - r}, {p.x + r, p.y + r}} -- Do the math once
-	if waters.clean[surface.get_tile(p).name] then
+	local tilename = surface.get_tile(p).name
+	if waters.clean[tilename] then
 		if surface.count_tiles_filtered{area = area, name = "water", limit = 25} +
 			surface.count_tiles_filtered{area = area, name = "deepwater", limit = 25} >= 25
 		then
 			surface.create_entity{name = "water-ripple" .. rand(1, 4) .. "-smoke", position = p}
       return true
 		end
-	elseif waters.green[surface.get_tile(p).name] then
+	elseif waters.green[tilename] then
 		if surface.count_tiles_filtered{area = area, name = "water-green", limit = 25} +
 			surface.count_tiles_filtered{area = area, name = "deepwater-green", limit = 25} >= 25
 		then
 			surface.create_entity{name = "greenwater-ripple" .. rand(1, 4) .. "-smoke", position = p}
+      return true
+		end
+	elseif waters.mud[tilename] then
+		if surface.count_tiles_filtered{area = area, name = "water-shallow", limit = 25} +
+			surface.count_tiles_filtered{area = area, name = "water-mud", limit = 25} >= 25
+		then
+			surface.create_entity{name = "mudwater-ripple" .. rand(1, 4) .. "-smoke", position = p}
       return true
 		end
 	end
