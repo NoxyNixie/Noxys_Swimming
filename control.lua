@@ -50,7 +50,7 @@ script.on_event(defines.events.on_tick, function(event)
 	if event.tick % 60 == 0 then
 		-- Ripple for players in water
 		for _,player in pairs(game.connected_players) do
-			if player.character then
+			if player.character and player.vehicle == nil then
 				do_the_ripple(player)
 			end
 		end
@@ -59,9 +59,8 @@ end)
 
 script.on_event(defines.events.on_player_changed_position, function(e)
 	local player = game.players[e.player_index]
-	if player.character then
+	if player.character and player.vehicle == nil then
 		do_the_ripple(player)
-		--@todo: Vehicles should splash at the wheels
 		if waters.clean[player.surface.get_tile(player.position).name] then
 			player.surface.create_entity{name = "water-splash-smoke", position = player.position}
 		elseif waters.green[player.surface.get_tile(player.position).name] then
