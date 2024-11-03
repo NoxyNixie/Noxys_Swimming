@@ -61,13 +61,15 @@ end)
 
 script.on_event(defines.events.on_player_changed_position, function(e)
   local player = game.players[e.player_index]
+  if not player.character then return end
+  if player.vehicle ~= nil then return end
   local position = player.character.position
   local oldpos = storage.lastposition
   if oldpos == nil then oldpos = { x = 0, y = 0 } end
   if position.x == oldpos.x and position.y == oldpos.y then return end
   storage.lastposition = position
   local tile = player.surface.get_tile(position)
-  if player.character and player.vehicle == nil and tile.valid then
+  if tile.valid then
     do_the_ripple(player)
     if waters.clean[player.surface.get_tile(position).name] then
       player.surface.create_entity { name = "water-splash-smoke", position = position }
