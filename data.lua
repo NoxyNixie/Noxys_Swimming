@@ -9,12 +9,8 @@ end
 
 for _,water in pairs(waters) do
 	-- Collision mask
-	local mask = data.raw.tile[water].collision_mask
-	for i=#mask,1,-1 do
-		if mask[i] == "player-layer" then
-			table.remove(mask, i)
-		end
-	end
+	local mask = data.raw.tile[water].collision_mask.layers
+  if mask["player"] then mask["player"] = nil end
 	-- Sound
 	data.raw.tile[water].walking_sound = {
 		{
@@ -55,7 +51,7 @@ data:extend{{
 	end_scale = 1,
 	animation =
 	{
-		filename = "__base__/graphics/entity/water-splash/water-splash.png",
+		filename = "__Noxys_Swimming__/graphics/water-splash.png",
 		priority = "extra-high",
 		width = 92,
 		height = 66,
@@ -82,7 +78,7 @@ data:extend{{
 	deviation = {0, 0},
 	animation =
 	{
-		filename = "__base__/graphics/entity/water-splash/water-splash.png",
+		filename = "__Noxys_Swimming__/graphics/water-splash.png",
 		priority = "extra-high",
 		width = 92,
 		height = 66,
@@ -107,7 +103,7 @@ local function make_ripple(prefix, nr, color)
 		type = "smoke-with-trigger",
 		name = prefix .. "-ripple" .. nr .. "-smoke",
 		flags = {"not-on-map", "placeable-off-grid"},
-		render_layer = "tile-transition",
+		render_layer = "above-tiles",
 		show_when_smoke_off = true,
 		deviation = {0, 0},
 		animation =
