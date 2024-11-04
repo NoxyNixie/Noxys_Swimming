@@ -3,7 +3,8 @@ local rand = math.random
 local waters = {
   clean = { ["water"] = true, ["deepwater"] = true },
   green = { ["water-green"] = true, ["deepwater-green"] = true },
-  mud = { ["water-mud"] = true, ["water-shallow"] = true }
+  mud = { ["water-mud"] = true, ["water-shallow"] = true },
+  wube = { ["water-wube"] = true },
 }
 
 script.on_configuration_changed(function()
@@ -41,6 +42,12 @@ local function ripple_at_position(p, surface)
       surface.create_entity { name = "mudwater-ripple" .. rand(1, 4) .. "-smoke", position = p }
       return true
     end
+  elseif waters.wube[tilename] then
+    if surface.count_tiles_filtered { area = area, name = "water-wube", limit = 25 } >= 25
+    then
+      surface.create_entity { name = "water-ripple" .. rand(1, 4) .. "-smoke", position = p }
+      return true
+    end
   end
 end
 
@@ -51,8 +58,9 @@ end
 script.on_event(defines.events.on_tick, function(event)
   if event.tick % 60 == 0 then
     -- Ripple for players in water
+    local vfx_for_vehicles = settings.global["Noxys_Swimming-vfx-for-vehicles"].value
     for _, player in pairs(game.connected_players) do
-      if player.character and player.vehicle == nil then
+      if player.character and (player.vehicle == nil or vfx_for_vehicles) then
         do_the_ripple(player)
       end
     end
@@ -62,7 +70,8 @@ end)
 script.on_event(defines.events.on_player_changed_position, function(e)
   local player = game.players[e.player_index]
   if not player.character then return end
-  if player.vehicle ~= nil then return end
+  local vfx_for_vehicles = settings.global["Noxys_Swimming-vfx-for-vehicles"].value
+  if player.vehicle ~= nil and not vfx_for_vehicles then return end
   local position = player.character.position
   local oldpos = storage.lastposition
   if oldpos == nil then oldpos = { x = 0, y = 0 } end

@@ -18,13 +18,13 @@ data:extend({
 		maximum_value = 10,
 		order = "b"
 	},
+	-- Global
 	{
 		type = "bool-setting",
-		name = "Noxys_Swimming-is-deep-swimmable",
-		setting_type = "startup",
+		name = "Noxys_Swimming-vfx-for-vehicles",
+		setting_type = "runtime-global",
 		default_value = true,
 		order = "c"
 	},
-	-- Global
 	-- Per user
 })
